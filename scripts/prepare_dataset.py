@@ -1,5 +1,5 @@
 import random
-SEED = 42
+SEED = 3916111
 
 
 if __name__ == "__main__":
