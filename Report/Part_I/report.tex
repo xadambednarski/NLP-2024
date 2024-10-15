@@ -1,0 +1,269 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[a4paper, margin=1in]{geometry}  
+\usepackage{array}  
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{float}
+
+\title{Anotacja korpusów oraz osadzenia słów i tekstów\\Część I: Procedura anotacji}
+\author{Autorzy: Oliwer Krupa, Adam Bednarski, Jan Masłowski, Łukasz Lenkiewicz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\renewcommand{\contentsname}{Rozdziały}
+\tableofcontents
+\newpage
+
+\section{Wybór Korpusu Tekstów}
+W celu przeprowadzenia zadania anotacji tekstów wybraliśmy korpus \texttt{poleval2019\_cyberbullying} z HuggingFace Datasets. Korpus ten został opracowany w ramach konkursu PolEval 2019 i zawiera teksty w języku polskim dotyczące problematyki mowy nienawiści i cyberprzemocy. Zbiór został stworzony w celu oceny systemów do detekcji treści o charakterze nienawistnym i przemocowym w internecie. Składa się on z anonimowych postów i komentarzy z polskich mediów społecznościowych, które zostały ręcznie oznaczone pod kątem cyberprzemocy.
+
+Korpus składa się z następujących elementów:
+\begin{itemize}
+    \item \textbf{Posty i komentarze} - anonimowe wpisy pobrane z różnych platform internetowych.
+    \item \textbf{Anotacje} - każdy post został ręcznie zaklasyfikowany jako zawierający lub niezawierający treści związane z mową nienawiści.
+\end{itemize}
+
+\subsection{Specyfikacja Zbioru}
+Zbiór danych zawiera następujące cechy:
+\begin{itemize}
+    \item Liczba przykładów: 10,000 wpisów i komentarzy.
+    \item Struktura danych: Każdy wpis zawiera pole \texttt{text}, które reprezentuje zawartość tekstową, oraz pole \texttt{label}, które klasyfikuje wpis jako cyberprzemoc (\texttt{1}) lub brak cyberprzemocy (\texttt{0}).
+    \item Język: Polski.
+\end{itemize}
+
+Więcej informacji na temat zbioru danych znajduje się na stronie projektu: \url{https://huggingface.co/datasets/poleval/poleval2019_cyberbullying}.
+
+\section{Wytyczne i Przeprowadzenie Anotacji Tekstów}
+
+\subsection{Wprowadzenie}
+W celu oznaczenia i analizy danych dotyczących mowy nienawiści, zdecydowaliśmy się na wykorzystanie narzędzia \texttt{Docanno}. Docanno umożliwia intuicyjne i efektywne oznaczanie tekstu na różnych poziomach, co pozwala na realizację zadania zarówno na poziomie całych dokumentów, jak i ich fragmentów.
+
+\subsection{Notatka dla Anotatorów}
+Aby zapewnić spójność i jednolite podejście podczas procesu anotacji, przygotowaliśmy krótką notatkę zawierającą wytyczne dla anotatorów. Poniżej przedstawiamy instrukcje, które były stosowane przez wszystkie osoby zaangażowane w proces anotacji:
+
+\begin{enumerate}
+    \item Oceniamy tweeta w taki sposób, że:
+    \begin{itemize}
+        \item \texttt{0} - neutralny tweet,
+        \item \texttt{1} - mowa nienawiści.
+    \end{itemize}
+    
+    \item Oceniamy frazy tweeta, przypisując im odpowiednie etykiety słowne w zależności od ich wpływu na wydźwięk całego tweeta:
+    \begin{itemize}
+        \item \texttt{4} - wzmacnianie,
+        \item \texttt{5} - odwracanie,
+        \item \texttt{6} - osłabianie.
+    \end{itemize}
+\end{enumerate}
+
+Te wytyczne zapewniają, że anotatorzy zwracają uwagę zarówno na ogólny charakter wpisu, jak i na poszczególne frazy, które mogą mieć wpływ na ton całego tekstu.
+
+\subsection{Proces Anotacji}
+W ramach zadania anotacji, każdy anotator został poproszony o oznaczenie 100 wybranych postów, które zostały losowo wybrane z pełnego korpusu danych. Anotacja została przeprowadzona na dwóch poziomach:
+\begin{itemize}
+    \item \textbf{Anotacja na poziomie całego tekstu} - ocena ogólnego wydźwięku tweeta jako neutralnego lub zawierającego mowę nienawiści.
+    \item \textbf{Anotacja na poziomie poszczególnych fragmentów tekstu} - przypisanie odpowiednich etykiet frazom mającym wpływ na wydźwięk tweeta.
+\end{itemize}
+
+\subsection{Dobre Praktyki Anotacji}
+Podczas procesu anotacji zastosowaliśmy następujące dobre praktyki:
+\begin{itemize}
+    \item \textbf{Niezależność anotacji} - każdy anotator pracował niezależnie, co zapewnia brak wpływu innych osób na ocenę wpisów.
+    \item \textbf{Losowe próbkowanie} - próbka 100 tweetów została losowo wybrana z pełnego zbioru danych, co zwiększa obiektywizm oceny.
+    \item \textbf{Klarowne wytyczne} - dzięki jednoznacznym zasadom anotacji, anotatorzy mieli jasność co do sposobu oceny tweetów i ich fragmentów.
+\end{itemize}
+
+\subsection{Podsumowanie}
+W wyniku procesu anotacji, każdy wpis w próbce został oznaczony zarówno na poziomie całego tekstu, jak i poszczególnych fraz. Wszystkie wyniki anotacji zostały zapisane w plikach JSONL, które zostaną wykorzystane do dalszej analizy. Załączone pliki obejmują oznaczone dane dla każdego anotatora.
+
+\section{Analiza Zgodności Anotatorów}
+
+\subsection{Kappa Cohena}
+
+W celu oceny zgodności pomiędzy annotatorami w zadaniu klasyfikacji postów obliczono wartość Kappy Cohena. Kappa Cohena to statystyczna miara zgodności, która uwzględnia nie tylko zgodność rzeczywistą między annotatorami, ale także zgodność przypadkową. Jest to bardziej zaawansowana miara w porównaniu z procentową zgodnością, ponieważ eliminuje wpływ losowości w przypisywaniu kategorii, co czyni ją bardziej miarodajną w analizie wyników.
+
+\paragraph{Macierz konfuzji:}
+Na podstawie wyników oznaczania stworzono następującą macierz konfuzji, która pokazuje liczbę przypadków, w których annotatorzy przypisali takie same lub różne etykiety:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+           & \textbf{Janek: Neutral} & \textbf{Janek: Hate} \\ \hline
+\textbf{Adam: Neutral} & 89                      & 4                   \\ \hline
+\textbf{Adam: Hate}    & 1                       & 6                   \\ \hline
+\end{tabular}
+\caption{Macierz konfuzji dla oznaczeń Adama i Janka}
+\end{table}
+
+Z tej macierzy wynika, że annotatorzy w 89 przypadkach przypisali kategorię "Neutral", natomiast w 6 przypadkach zgodnie przypisali kategorię "Hate". W 4 przypadkach annotator Adam przypisał "Hate", podczas gdy Janek przypisał "Neutral", natomiast w 1 przypadku było odwrotnie.
+
+\paragraph{Obliczenie Kappy Cohena:}
+Funkcja użyta do obliczenia Kappy Cohena bazuje na macierzy konfuzji, która pokazuje zgodności i niezgodności pomiędzy annotatorami. Na podstawie tej macierzy funkcja oblicza, jaka część zgodności wynika z rzeczywistych decyzji annotatorów, a jaka mogła być przypadkowa. Wynik, zwany Kappą Cohena, przedstawia stopień zgodności po uwzględnieniu przypadkowej zgodności.
+
+Kappa Cohena w tym przypadku wynosi \( \kappa = 0.679 \), co wskazuje na umiarkowaną zgodność pomiędzy annotatorami. Część zgodności można przypisać przypadkowi, ale annotatorzy są w znacznym stopniu zgodni, co czyni wyniki wiarygodnymi, choć nie doskonałymi.
+
+\paragraph{Wyniki:}
+Wartości macierzy konfuzji oraz obliczona Kappa Cohena zostały podsumowane poniżej:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Wartość}      & \textbf{Opis}                        \\ \hline
+\textbf{89}           & Obaj annotatorzy przypisali "Neutral" \\ \hline
+\textbf{6}            & Obaj annotatorzy przypisali "Hate"    \\ \hline
+\textbf{4}            & Adam przypisał "Hate", Janek "Neutral" \\ \hline
+\textbf{1}            & Adam przypisał "Neutral", Janek "Hate" \\ \hline
+\textbf{Kappa Cohena} & 0.679                                 \\ \hline
+\end{tabular}
+\caption{Wyniki obliczenia Kappy Cohena}
+\end{table}
+
+\paragraph{Dyskusja wyników:}
+Wartość Kappy Cohena wskazuje na umiarkowaną zgodność annotatorów. Obserwowana zgodność wynosi 95\%, co sugeruje wysoką zgodność pomiędzy annotatorami. Jednak przewidywana zgodność losowa była na poziomie 87\%, co oznacza, że część zgodności mogła wynikać z przypadku. Dlatego wynik \( \kappa = 0.679 \) wskazuje, że annotatorzy byli bardziej zgodni, niż wynikałoby to z przypadku, ale ich zgodność nie jest pełna. W związku z tym, aby zwiększyć spójność wyników, wskazane jest przeprowadzenie dalszej analizy oraz ewentualnie kolejnej iteracji anotacji, szczególnie w przypadkach, gdzie niezgodność była wyraźna.
+
+
+\section{Powtórna Anotacja na Nowej Próbce Danych}
+
+W procesie powtórnej anotacji na nowej próbce danych wprowadzono zaktualizowane wytyczne, mające na celu precyzyjniejszą ocenę treści tweetów oraz ich fraz. Nowa wersja notatki dla anotatorów, oznaczona jako \textbf{Notatka dla Anotatorów 2.0}, zawiera następujące zasady:
+
+\paragraph{1. Ocena ogólna tweetów:}
+\begin{itemize}
+    \item Tweet jest oceniany na dwóch poziomach:
+    \begin{itemize}
+        \item \textbf{0} - tweet neutralny, nie zawierający treści związanych z mową nienawiści.
+        \item \textbf{1} - tweet zawierający mowę nienawiści.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{2. Ocena fraz wewnątrz tweetów:}
+Po zaklasyfikowaniu tweeta jako zawierającego mowę nienawiści (\textbf{1}), anotator ocenia poszczególne frazy tweeta, biorąc pod uwagę ich wpływ na wydźwięk tweeta:
+\begin{itemize}
+    \item \textbf{Wzmacnianie (4)} - frazy, które wzmacniają negatywny ton tweeta.
+    \item \textbf{Odwracanie (5)} - frazy, które zmieniają kierunek emocjonalny tweeta, łagodząc negatywny ton.
+    \item \textbf{Osłabianie (6)} - frazy, które osłabiają negatywny ton tweeta.
+\end{itemize}
+
+\paragraph{3. Ograniczenia:}
+\begin{itemize}
+    \item Wzmacnianie, osłabianie i odwracanie dotyczy tylko tweetów, które zostały zaklasyfikowane jako zawierające mowę nienawiści. W przypadku tweetów neutralnych (0), nie oceniamy wpływu fraz na wydźwięk.
+\end{itemize}
+
+Zaktualizowane wytyczne w wersji 2.0 mają na celu bardziej precyzyjną ocenę wpływu poszczególnych fraz w tweetach zawierających mowę nienawiści, co pozwala na głębszą analizę treści i tonu wpisów.
+
+\section{Analiza Zgodności Drugiej Anotacji}
+
+\subsection{Kappa Cohena}
+
+W celu oceny zgodności pomiędzy annotatorami w drugiej rundzie anotacji obliczono wartość Kappy Cohena. Anotacje zostały przeprowadzone na nowej próbce danych, a wyniki miały na celu sprawdzenie, czy zmiany w wytycznych dla anotatorów wpłynęły na zgodność ich ocen.
+
+\paragraph{Macierz konfuzji:}
+Na podstawie wyników anotacji stworzono macierz konfuzji, która przedstawia liczbę przypadków, w których annotatorzy przypisali zgodne lub różne etykiety:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+           & \textbf{Janek: Neutral} & \textbf{Janek: Hate} \\ \hline
+\textbf{Adam: Neutral} & 86                      & 1                   \\ \hline
+\textbf{Adam: Hate}    & 3                       & 10                  \\ \hline
+\end{tabular}
+\caption{Macierz konfuzji dla drugiej anotacji}
+\end{table}
+
+\paragraph{Obliczenie Kappy Cohena:}
+Kappa Cohena obliczona na podstawie powyższej macierzy wyniosła \( \kappa = 0.811 \). Wynik ten wskazuje na wysoką zgodność między annotatorami, co sugeruje, że zaktualizowane wytyczne były skuteczne w ujednoliceniu ocen.
+
+\paragraph{Wyniki:}
+Wynik Kappy Cohena na poziomie 0.811 oznacza znaczną poprawę w porównaniu do pierwszej anotacji. Obserwuje się wysoką zgodność, co może być efektem lepszego zrozumienia i stosowania się do nowych wytycznych przez annotatorów. .
+
+\section{Podsumowanie Zbioru Danych za Pomocą Statystyk Opisowych}
+
+W celu zwięzłego podsumowania pozyskanego zbioru danych, obliczono szereg statystyk opisowych, które pozwalają na lepsze zrozumienie struktury danych anotacyjnych oraz charakterystyki tweetów. Statystyki te obejmują liczbę wpisów, średnią i medianę długości wpisów, odchylenie standardowe, a także liczby tweetów zaklasyfikowanych jako neutralne oraz zawierające mowę nienawiści.
+
+\subsection{Statystyki dla Anotacji Łukasza}
+Dla anotacji Łukasza zebrano 100 tweetów. W tabeli \ref{tab:lukasz_stats} przedstawiono statystyki opisowe dotyczące długości wpisów oraz klasyfikacji.
+
+\begin{table}[h]
+    \centering
+    \caption{Statystyki dla Anotacji Łukasza}
+    \label{tab:lukasz_stats}
+    \begin{tabular}{|l|l|}
+        \hline
+        Statystyka & Wartość \\ \hline
+        Liczba tweetów & 100 \\ \hline
+        Średnia długość (słowa) & 12.66 \\ \hline
+        Mediana długości (słowa) & 12.50 \\ \hline
+        Odchylenie standardowe & 4.37 \\ \hline
+        Najkrótszy wpis (słowa) & 4 \\ \hline
+        Najdłuższy wpis (słowa) & 22 \\ \hline
+        Liczba tweetów neutralnych & 0 \\ \hline
+        Liczba tweetów z mową nienawiści & 0 \\ \hline
+        Wpisy z wieloma etykietami & 0 \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Statystyki dla Anotacji Adama}
+Anotacje Adama obejmują 49 tweetów. W tabeli \ref{tab:adam_stats} przedstawiono statystyki opisowe dotyczące długości wpisów oraz klasyfikacji.
+
+\begin{table}[h]
+    \centering
+    \caption{Statystyki dla Anotacji Adama}
+    \label{tab:adam_stats}
+    \begin{tabular}{|l|l|}
+        \hline
+        Statystyka & Wartość \\ \hline
+        Liczba tweetów & 49 \\ \hline
+        Średnia długość (słowa) & 12.39 \\ \hline
+        Mediana długości (słowa) & 12.00 \\ \hline
+        Odchylenie standardowe & 4.44 \\ \hline
+        Najkrótszy wpis (słowa) & 6 \\ \hline
+        Najdłuższy wpis (słowa) & 23 \\ \hline
+        Liczba tweetów neutralnych & 0 \\ \hline
+        Liczba tweetów z mową nienawiści & 0 \\ \hline
+        Wpisy z wieloma etykietami & 0 \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Statystyki dla Anotacji Jana}
+W przypadku anotacji Jana zebrano 50 tweetów. W tabeli \ref{tab:jan_stats} przedstawiono statystyki opisowe dotyczące długości wpisów oraz klasyfikacji.
+
+\begin{table}[h]
+    \centering
+    \caption{Statystyki dla Anotacji Jana}
+    \label{tab:jan_stats}
+    \begin{tabular}{|l|l|}
+        \hline
+        Statystyka & Wartość \\ \hline
+        Liczba tweetów & 50 \\ \hline
+        Średnia długość (słowa) & 12.44 \\ \hline
+        Mediana długości (słowa) & 11.00 \\ \hline
+        Odchylenie standardowe & 5.58 \\ \hline
+        Najkrótszy tweet (słowa) & 6 \\ \hline
+        Najdłuższy tweet (słowa) & 25 \\ \hline
+        Liczba tweetów neutralnych & 45 \\ \hline
+        Liczba tweetów z mową nienawiści & 5 \\ \hline
+        Wpisy z wieloma etykietami & 3 \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Podsumowanie}
+Z zebranych statystyk wynika, że dane anotacyjne różnią się pod względem liczby wpisów, długości tweetów oraz klasyfikacji na wpisy neutralne i zawierające mowę nienawiści. Największy zbiór anotacji pochodzi od Łukasza, jednak w jego danych oraz w danych Adama nie zaklasyfikowano żadnych tweetów jako neutralnych lub zawierających mowę nienawiści. Z kolei zbiór anotacji Jana wykazuje różnorodność pod względem klasyfikacji, z przewagą tweetów neutralnych.
+
+
+\end{document}

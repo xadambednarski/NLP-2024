@@ -163,3 +163,12 @@ cython_debug/
 
 # macos
 .DS_Store
+
+# Ignore latex setup file 
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
