@@ -1,10 +1,10 @@
 import random
-SEED = 1020000
+SEED = 2151839213825
 
 
 if __name__ == "__main__":
     random.seed(SEED)
-    file = open("../data/input/task_6-1_all.txt", "r")
+    file = open("../data/input/task_6-3_all.txt", "r")
     all_text = file.read().split("\n")
     samples_ids = random.sample(range(0, len(all_text)), 100)
     sample_file = open("../data/input/task_6-3_sample.txt", "w")
