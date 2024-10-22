@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, margin=1in]{geometry}  
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Anotacja korpusów oraz osadzenia słów i tekstów\\Część II: Modele przestrzeni wektorowych}
+\author{Autorzy: Oliwer Krupa, Adam Bednarski, Jan Masłowski, Łukasz Lenkiewicz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Word Embeddings}
+
+\subsection{Osadzenia słów w anotowanym korpusie (Word2Vec i Fasttext)}
+Zadanie polegało na wykonaniu osadzeń słów z wykorzystaniem co najmniej dwóch różnych modeli. Wybraliśmy następujące modele osadzeń:
+\begin{itemize}
+    \item \textbf{Word2Vec}:
+    \begin{itemize}
+        \item dla języka polskiego: \url{https://dsmodels.nlp.ipipan.waw.pl}
+        \item dla języka angielskiego: \url{https://radimrehurek.com/gensim/index.html}
+    \end{itemize}
+    \item \textbf{Fasttext}:
+    \begin{itemize}
+        \item dla języka polskiego: \url{https://huggingface.co/clarin-pl/fastText-kgr10}
+        \item dla języka angielskiego: \url{https://fasttext.cc}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Wizualizacja danych za pomocą t-SNE}
+Dane zostały zwizualizowane za pomocą techniki t-SNE, z wykorzystaniem interaktywnych wykresów. Każdy punkt na wykresie odpowiada słowu z anotacją. Po najechaniu na punkt można odczytać zarówno słowo, jak i przypisaną do niego etykietę.
+
+\subsection{Porównanie k-najbardziej podobnych słów dla dwóch modeli}
+Dla każdego z modeli (Word2Vec i Fasttext) wygenerowano listy k-najbardziej podobnych słów w oparciu o osadzenia zaanotowanych słów. Następnie porównano listy podobieństw, uwzględniając różnice w reprezentacjach przestrzeni wektorowych.
+
+\subsection{Dyskusja wyników}
+Otrzymane wyniki pokazują różnice w sposobie, w jaki modele Word2Vec i Fasttext modelują przestrzeń wektorową. Obserwowane różnice w podobieństwach między słowami mogą wynikać z różnych metod treningu oraz charakterystyki korpusów użytych do trenowania modeli.
+
+\section{Text Embeddings}
+
+\subsection{Osadzenia zdań / tekstów (Fasttext i TF-IDF)}
+Dla osadzeń całych zdań i tekstów zastosowano dwa modele:
+\begin{itemize}
+    \item \textbf{Fasttext} (wykorzystano modele z wcześniejszego ćwiczenia),
+    \item \textbf{TF-IDF} z biblioteki sklearn.
+\end{itemize}
+
+\subsection{Wizualizacja osadzeń tekstów za pomocą t-SNE}
+Podobnie jak w przypadku osadzeń słów, zastosowano t-SNE do wizualizacji osadzeń tekstów, z odniesieniem do etykiet anotacji. Wykresy mają interaktywny charakter, umożliwiając użytkownikowi odczytanie pełnego zdania i jego anotacji po najechaniu na punkt.
+
+\subsection{Klasteryzacja osadzeń anotowanych zdań}
+Osadzenia zdań zostały poddane klasteryzacji z wykorzystaniem algorytmu HDBSCAN, a wyniki klasteryzacji przedstawiono w zredukowanej przestrzeni, z wykorzystaniem t-SNE. Interaktywne wykresy umożliwiają przeglądanie przypisanych klastrów i przypisanych do nich zdań.
+
+\subsection{Dyskusja wyników}
+Wyniki klasteryzacji oraz wizualizacji t-SNE pokazują, że różne modele osadzania zdań (Fasttext i TF-IDF) generują różne reprezentacje przestrzeni. TF-IDF jest bardziej czuły na częstość występowania słów, natomiast Fasttext efektywniej modeluje podobieństwa semantyczne, co jest szczególnie widoczne w wynikach klasteryzacji. Różnice te mogą wpływać na wydajność modeli w zadaniach klasyfikacji.
+
+\end{document}
