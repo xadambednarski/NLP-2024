@@ -1,0 +1,7 @@
+pandas
+gensim
+scikit-learn
+numpy
+spacy
+bs4
+plotly
