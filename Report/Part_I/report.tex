@@ -14,6 +14,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{float}
+\usepackage{breqn}
 
 \title{Anotacja korpusów oraz osadzenia słów i tekstów\\Część I: Procedura anotacji}
 \author{Autorzy: Oliwer Krupa, Adam Bednarski, Jan Masłowski, Łukasz Lenkiewicz}
@@ -138,6 +139,70 @@ Wartości macierzy konfuzji oraz obliczona Kappa Cohena zostały podsumowane pon
 Wartość Kappy Cohena wskazuje na umiarkowaną zgodność annotatorów. Obserwowana zgodność wynosi 95\%, co sugeruje wysoką zgodność pomiędzy annotatorami. Jednak przewidywana zgodność losowa była na poziomie 87\%, co oznacza, że część zgodności mogła wynikać z przypadku. Dlatego wynik \( \kappa = 0.679 \) wskazuje, że annotatorzy byli bardziej zgodni, niż wynikałoby to z przypadku, ale ich zgodność nie jest pełna. W związku z tym, aby zwiększyć spójność wyników, wskazane jest przeprowadzenie dalszej analizy oraz ewentualnie kolejnej iteracji anotacji, szczególnie w przypadkach, gdzie niezgodność była wyraźna.
 
 
+
+\subsection{Procent Częściowej Zgodności (PPA) dla pierwszej anotacji}
+
+Aby dokładniej ocenić zgodność między anotatorami, obliczono Procent Częściowej Zgodności (PPA). PPA to miara, która uwzględnia stopień częściowej zgodności między dwoma anotatorami podczas etykietowania tekstów lub ich fragmentów. W odróżnieniu od Kappy Cohena, która ocenia ogólną zgodność, PPA skupia się na częściowym pokrywaniu się anotacji, co jest szczególnie użyteczne, gdy mamy do czynienia z wieloma etykietami lub nakładającymi się zakresami.
+
+\subsubsection{PPA dla Całych Zdań}
+
+Na podstawie macierzy konfuzji możemy obliczyć PPA dla anotacji na poziomie zdań:
+
+\begin{itemize}
+    \item Adam i Janek zgodzili się w 89 przypadkach co do etykiety „Neutral”.
+    \item Zgodzili się w 6 przypadkach co do etykiety „Hate” (mowa nienawiści).
+    \item W 4 przypadkach Adam przypisał etykietę „Hate”, podczas gdy Janek ocenił te same zdania jako „Neutral”.
+    \item W 1 przypadku Adam przypisał etykietę „Neutral”, a Janek „Hate”.
+\end{itemize}
+
+Wzór na obliczenie PPA dla zdań to:
+
+\begin{dmath}
+PPA_{\text{zdania}} = \frac{2 \times \text{Zgoda na Neutral i Hate}}{2 \times \text{Zgoda na Neutral i Hate} + \text{Adam: Hate, Janek: Neutral} + \text{Adam: Neutral, Janek: Hate}} \times 100
+\end{dmath}
+
+Podstawiając wartości:
+
+\begin{dmath}
+PPA_{\text{zdania}} = \frac{2 \times 89}{2 \times 89 + 4 + 1} \times 100 = 97.27\%
+\end{dmath}
+
+Wskazuje to na wysoki poziom zgodności między Adamem a Jankiem na poziomie całych zdań.
+
+\subsubsection{PPA dla Frazy}
+
+Następnie przeanalizowano zgodność na poziomie fraz. Po odfiltrowaniu zdań oznaczonych jako „Hate” lub „Neutral”, skupiono się na frazach, takich jak „Wzmacnianie” czy „Osłabianie”, i oceniono, jak często Adam i Janek zgodzili się co do ich etykietowania:
+
+\begin{itemize}
+    \item Obaj anotatorzy oznaczyli tę samą frazę: 6 przypadków.
+    \item Janek oznaczył frazę, Adam tego nie zrobił: 4 przypadki.
+    \item Adam oznaczył frazę, Janek tego nie zrobił: 7 przypadków.
+\end{itemize}
+
+Wzór na obliczenie PPA dla fraz to:
+
+\begin{dmath}
+PPA_{\text{frazy}} = \frac{2 \times \text{Obaj zgodni}}{2 \times \text{Obaj zgodni} + \text{Janek oznaczył, Adam nie} + \text{Adam oznaczył, Janek nie}} \times 100
+\end{dmath}
+
+Podstawiając wartości:
+
+\begin{dmath}
+PPA_{\text{frazy}} = \frac{2 \times 6}{2 \times 6 + 4 + 7} \times 100 = 52.17\%
+\end{dmath}
+
+Ta niższa wartość odzwierciedla trudności w osiągnięciu pełnej zgodności na bardziej szczegółowym poziomie fraz.
+
+\subsubsection{Średni PPA}
+
+Aby podsumować zgodność na poziomie zarówno zdań, jak i fraz, obliczono średnią z obu wartości PPA:
+
+\begin{dmath}
+PPA_{\text{średnie}} = \frac{PPA_{\text{zdania}} + PPA_{\text{frazy}}}{2} = \frac{97.27 + 52.17}{2} = 74.72\%
+\end{dmath}
+
+Ogólny PPA sugeruje stosunkowo wysoki poziom zgodności między anotatorami, z wyraźnie większą spójnością na poziomie całych zdań w porównaniu do bardziej szczegółowych anotacji fraz.
+
 \section{Powtórna Anotacja na Nowej Próbce Danych}
 
 W procesie powtórnej anotacji na nowej próbce danych wprowadzono zaktualizowane wytyczne, mające na celu precyzyjniejszą ocenę treści tweetów oraz ich fraz. Nowa wersja notatki dla anotatorów, oznaczona jako \textbf{Notatka dla Anotatorów 2.0}, zawiera następujące zasady:
@@ -192,34 +257,83 @@ Kappa Cohena obliczona na podstawie powyższej macierzy wyniosła \( \kappa = 0.
 \paragraph{Wyniki:}
 Wynik Kappy Cohena na poziomie 0.811 oznacza znaczną poprawę w porównaniu do pierwszej anotacji. Obserwuje się wysoką zgodność, co może być efektem lepszego zrozumienia i stosowania się do nowych wytycznych przez annotatorów. .
 
+\subsection{Procent Częściowej Zgodności (PPA) dla Drugiej Anotacji}
+
+Dla drugiej rundy anotacji, PPA zostało ponownie obliczone na podstawie danych z plików \texttt{labeled\_sample\_adam\_2.jsonl} oraz \texttt{labeled\_sample\_jan\_2.jsonl}. Podobnie jak w przypadku pierwszej anotacji, obliczono PPA zarówno na poziomie zdań, jak i fraz.
+
+\subsubsection{PPA dla Całych Zdań}
+
+Na podstawie macierzy konfuzji poniżej możemy obliczyć PPA dla zdań:
+
+\[
+\text{Macierz konfuzji} =
+\begin{bmatrix}
+10 & 1 \\
+3 & 85 \\
+\end{bmatrix}
+\]
+
+Macierz ta przedstawia następujące liczby przypisanych etykiet:
+\begin{itemize}
+    \item 10 przypadków, w których zarówno Adam, jak i Janek przypisali etykietę "Hate".
+    \item 85 przypadków, w których obaj anotatorzy przypisali etykietę "Neutral".
+    \item 1 przypadek, gdzie Adam przypisał etykietę "Hate", a Janek "Neutral".
+    \item 3 przypadki, gdzie Adam przypisał etykietę "Neutral", a Janek "Hate".
+\end{itemize}
+
+Wzór na obliczenie PPA dla zdań pozostaje taki sam:
+
+\begin{dmath}
+PPA_{\text{zdania}} = \frac{2 \times (10 + 85)}{2 \times (10 + 85) + 1 + 3} \times 100 = 97.27\%
+\end{dmath}
+
+Wskazuje to na bardzo wysoki poziom zgodności między anotatorami na poziomie całych zdań, podobnie jak w pierwszej rundzie anotacji.
+
+\subsubsection{PPA dla Frazy}
+
+Po analizie fraz, PPA zostało obliczone na następującej podstawie:
+\begin{itemize}
+    \item W 8 przypadkach obaj anotatorzy przypisali tę samą etykietę dla fraz.
+    \item W 8 przypadkach Janek przypisał etykietę dla frazy, a Adam tego nie zrobił.
+    \item W 6 przypadkach Adam przypisał etykietę dla frazy, a Janek tego nie zrobił.
+\end{itemize}
+
+Wzór na obliczenie PPA dla fraz to:
+
+\begin{dmath}
+PPA_{\text{frazy}} = \frac{2 \times 8}{2 \times 8 + 8 + 6} \times 100 = 53.33\%
+\end{dmath}
+
+Wynik PPA dla fraz jest niższy niż w przypadku zdań, co sugeruje większą trudność w osiągnięciu zgodności na bardziej szczegółowym poziomie fraz.
+
+\subsubsection{Średni PPA}
+
+Średnią PPA dla zdań i fraz obliczono w następujący sposób:
+
+\begin{dmath}
+PPA_{\text{średnie}} = \frac{PPA_{\text{zdania}} + PPA_{\text{frazy}}}{2} = \frac{97.27 + 53.33}{2} = 75.3\%
+\end{dmath}
+
+Średnia zgodność między anotatorami wynosi 75.3\%, co jest wynikiem zbliżonym do pierwszej rundy anotacji, z wyższą zgodnością na poziomie zdań niż fraz.
+
+\section{Wnioski wynikające z przeprowadzonych analiz}
+
+Na podstawie uzyskanych wyników dla wskaźników PPA oraz Kappy Cohena, możemy wyciągnąć następujące wnioski:
+
+Po przeprowadzeniu drugiej iteracji anotacji zaobserwowano wyraźną poprawę zgodności między anotatorami, szczególnie na poziomie fraz. Średnia wartość PPA wzrosła z 74.72\% w pierwszej iteracji do 75.3\% w drugiej, co wskazuje na bardziej spójne etykietowanie zarówno całych zdań, jak i fragmentów tekstu. Wzrost ten sugeruje, że wprowadzenie zaktualizowanych instrukcji dla anotatorów przyczyniło się do lepszego zrozumienia kryteriów anotacyjnych i poprawy jakości oceny treści.
+
+Warto również zauważyć, że wskaźnik PPA dla zdań utrzymał się na wysokim poziomie 97.27\% zarówno w pierwszej, jak i drugiej iteracji, co świadczy o konsekwentnej zgodności anotatorów na tym poziomie. Z kolei poprawa PPA dla fraz (z 52.17\% do 53.33\%) wskazuje na pewien postęp w bardziej szczegółowej analizie fragmentów tekstu, choć wciąż pozostaje wyzwanie osiągnięcia pełnej zgodności na tym poziomie.
+
+Na podstawie tych wyników można stwierdzić, że wprowadzenie kolejnej iteracji anotacji oraz lepszych instrukcji przyniosło korzyści, zwiększając spójność ocen między anotatorami, zwłaszcza w kontekście bardziej złożonych fraz. Pomimo poprawy, warto rozważyć dalsze usprawnienia w procesie anotacji, aby zminimalizować rozbieżności w ocenie poszczególnych fragmentów tekstu.
+
+
 \section{Podsumowanie Zbioru Danych za Pomocą Statystyk Opisowych}
 
-W celu zwięzłego podsumowania pozyskanego zbioru danych, obliczono szereg statystyk opisowych, które pozwalają na lepsze zrozumienie struktury danych anotacyjnych oraz charakterystyki tweetów. Statystyki te obejmują liczbę wpisów, średnią i medianę długości wpisów, odchylenie standardowe, a także liczby tweetów zaklasyfikowanych jako neutralne oraz zawierające mowę nienawiści.
+W celu lepszego zrozumienia struktury anotacyjnej i charakterystyki tweetów w zbiorze danych, obliczono szereg statystyk opisowych dla każdej grupy anotacji. Statystyki te obejmują liczbę tweetów, średnią i medianę długości wpisów, odchylenie standardowe, a także rozkład wpisów zaklasyfikowanych jako neutralne lub zawierające mowę nienawiści. Analiza tych danych umożliwia ocenę spójności, różnorodności i charakteru próbek danych przypisanych poszczególnym anotatorom.
 
-\subsection{Statystyki dla Anotacji Łukasza}
-Dla anotacji Łukasza zebrano 100 tweetów. W tabeli \ref{tab:lukasz_stats} przedstawiono statystyki opisowe dotyczące długości wpisów oraz klasyfikacji.
+\subsection{Statystyki dla Anotacji Adama i Jana}
 
-\begin{table}[h]
-    \centering
-    \caption{Statystyki dla Anotacji Łukasza}
-    \label{tab:lukasz_stats}
-    \begin{tabular}{|l|l|}
-        \hline
-        Statystyka & Wartość \\ \hline
-        Liczba tweetów & 100 \\ \hline
-        Średnia długość (słowa) & 12.66 \\ \hline
-        Mediana długości (słowa) & 12.50 \\ \hline
-        Odchylenie standardowe & 4.37 \\ \hline
-        Najkrótszy wpis (słowa) & 4 \\ \hline
-        Najdłuższy wpis (słowa) & 22 \\ \hline
-        Liczba tweetów neutralnych & 0 \\ \hline
-        Liczba tweetów z mową nienawiści & 0 \\ \hline
-        Wpisy z wieloma etykietami & 0 \\ \hline
-    \end{tabular}
-\end{table}
-
-\subsection{Statystyki dla Anotacji Adama}
-Anotacje Adama obejmują 49 tweetów. W tabeli \ref{tab:adam_stats} przedstawiono statystyki opisowe dotyczące długości wpisów oraz klasyfikacji.
+Każdy z anotatorów pracował na niezależnej próbce danych, co oznacza, że ich zestawy tweetów różniły się zarówno pod względem treści, jak i charakterystyki klasyfikacji. W tabelach \ref{tab:adam_stats} i \ref{tab:jan_stats} przedstawiono szczegółowe statystyki dotyczące tweetów oznaczonych przez Adama i Jana, umożliwiające porównanie długości wpisów oraz przydzielonych etykiet.
 
 \begin{table}[h]
     \centering
@@ -228,7 +342,7 @@ Anotacje Adama obejmują 49 tweetów. W tabeli \ref{tab:adam_stats} przedstawion
     \begin{tabular}{|l|l|}
         \hline
         Statystyka & Wartość \\ \hline
-        Liczba tweetów & 49 \\ \hline
+        Liczba tweetów & 50 \\ \hline
         Średnia długość (słowa) & 12.39 \\ \hline
         Mediana długości (słowa) & 12.00 \\ \hline
         Odchylenie standardowe & 4.44 \\ \hline
@@ -239,9 +353,6 @@ Anotacje Adama obejmują 49 tweetów. W tabeli \ref{tab:adam_stats} przedstawion
         Wpisy z wieloma etykietami & 0 \\ \hline
     \end{tabular}
 \end{table}
-
-\subsection{Statystyki dla Anotacji Jana}
-W przypadku anotacji Jana zebrano 50 tweetów. W tabeli \ref{tab:jan_stats} przedstawiono statystyki opisowe dotyczące długości wpisów oraz klasyfikacji.
 
 \begin{table}[h]
     \centering
@@ -262,8 +373,14 @@ W przypadku anotacji Jana zebrano 50 tweetów. W tabeli \ref{tab:jan_stats} prze
     \end{tabular}
 \end{table}
 
-\subsection{Podsumowanie}
-Z zebranych statystyk wynika, że dane anotacyjne różnią się pod względem liczby wpisów, długości tweetów oraz klasyfikacji na wpisy neutralne i zawierające mowę nienawiści. Największy zbiór anotacji pochodzi od Łukasza, jednak w jego danych oraz w danych Adama nie zaklasyfikowano żadnych tweetów jako neutralnych lub zawierających mowę nienawiści. Z kolei zbiór anotacji Jana wykazuje różnorodność pod względem klasyfikacji, z przewagą tweetów neutralnych.
+Zarówno Adam, jak i Jan pracowali na różnych próbkach danych, co skutkuje różnicami w wynikach klasyfikacji. Zbiór anotacji Adama charakteryzuje się brakiem wpisów zaklasyfikowanych jako neutralne lub zawierające mowę nienawiści, co sugeruje, że jego próbka danych mogła składać się z bardziej jednolitych treści. Z kolei Jan, pracując na innej próbie, sklasyfikował 45 tweetów jako neutralne i 5 jako zawierające mowę nienawiści, co wskazuje na większą różnorodność treści w jego zbiorze.
 
+Pomimo różnic w klasyfikacji, długość tweetów w obu próbkach była dość zbliżona, o czym świadczą podobne wartości średniej długości (12.39 słów u Adama i 12.44 słów u Jana). Odchylenie standardowe jest nieco wyższe w przypadku anotacji Jana, co sugeruje większą rozpiętość długości wpisów w jego próbce.
+
+\subsection{Podsumowanie}
+
+Mimo że Adam i Jan pracowali na różnych próbkach danych, można zauważyć kilka wspólnych elementów, takich jak podobna długość tweetów. Główna różnica dotyczy rozkładu etykiet – Adam nie zaklasyfikował żadnych tweetów jako neutralnych lub zawierających mowę nienawiści, natomiast Jan zaklasyfikował znaczną liczbę tweetów jako neutralne i kilka jako zawierające mowę nienawiści.
+
+Wyniki te sugerują, że charakterystyka próbek danych mogła mieć wpływ na decyzje anotatorów. Wprowadzenie lepszych wytycznych w kolejnych iteracjach anotacji mogło pomóc w bardziej spójnej klasyfikacji między anotatorami, jednakże różnice w próbkach danych nadal mogą wpływać na interpretację wyników. W przyszłych analizach warto dążyć do dalszej standaryzacji próbek oraz optymalizacji wytycznych, aby zminimalizować różnice w klasyfikacji wynikające z samego charakteru danych.
 
 \end{document}
