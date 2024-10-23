@@ -92,14 +92,14 @@ but & bucik, skarpeta, sandał, trzewik, spodnie \\
 \end{table}
 
 \subsection{Dyskusja wyników}
-Otrzymane wyniki pokazują różnice w sposobie, w jaki modele Word2Vec i Fasttext modelują przestrzeń wektorową. Obserwowane różnice w podobieństwach między słowami mogą wynikać z różnych metod treningu oraz charakterystyki korpusów użytych do trenowania modeli.
+Otrzymane wyniki pokazują różnice w sposobie, w jaki modele Word2Vec i Fasttext modelują przestrzeń wektorową. Obserwowane różnice w podobieństwach między słowami mogą wynikać z różnych metod treningu oraz charakterystyki korpusów użytych do trenowania modeli. Model z biblioteki fastText sugerował często różne warianty tych samych słów (nierzadko błędnie zapisanych). Jedną z możliwych przyczyn może być brak odpowiedniego preprocessingu zbioru danych uczących przed trenowaniem modelu. W przypadku Word2Vec generowane wyrazy były bardziej różnorodne i rzeczywiście pochodziły ze słownika jezyka polskiego.
 
 \section{Text Embeddings}
 
 \subsection{Osadzenia zdań / tekstów (Fasttext i TF-IDF)}
 Dla osadzeń całych zdań i tekstów zastosowano dwa modele:
 \begin{itemize}
-    \item \textbf{Fasttext} (wykorzystano modele z wcześniejszego ćwiczenia),
+    \item \textbf{Bert} z biblioteki flair.
     \item \textbf{TF-IDF} z biblioteki sklearn.
 \end{itemize}
 
@@ -107,9 +107,9 @@ Dla osadzeń całych zdań i tekstów zastosowano dwa modele:
 Podobnie jak w przypadku osadzeń słów, zastosowano t-SNE do wizualizacji osadzeń tekstów, z odniesieniem do etykiet anotacji. Wykresy mają interaktywny charakter, umożliwiając użytkownikowi odczytanie pełnego zdania i jego anotacji po najechaniu na punkt.
 
 \subsection{Klasteryzacja osadzeń anotowanych zdań}
-Osadzenia zdań zostały poddane klasteryzacji z wykorzystaniem algorytmu HDBSCAN, a wyniki klasteryzacji przedstawiono w zredukowanej przestrzeni, z wykorzystaniem t-SNE. Interaktywne wykresy umożliwiają przeglądanie przypisanych klastrów i przypisanych do nich zdań.
+Osadzenia zdań zostały poddane klasteryzacji z wykorzystaniem dwóch algorytmów: HDBSCAN oraz KMeans. Wyniki klasteryzacji przedstawiono w zredukowanej przestrzeni z wykorzystaniem t-SNE. Interaktywne wykresy umożliwiają przeglądanie przypisanych klastrów i przypisanych do nich zdań.
 
 \subsection{Dyskusja wyników}
-Wyniki klasteryzacji oraz wizualizacji t-SNE pokazują, że różne modele osadzania zdań (Fasttext i TF-IDF) generują różne reprezentacje przestrzeni. TF-IDF jest bardziej czuły na częstość występowania słów, natomiast Fasttext efektywniej modeluje podobieństwa semantyczne, co jest szczególnie widoczne w wynikach klasteryzacji. Różnice te mogą wpływać na wydajność modeli w zadaniach klasyfikacji.
+Wyniki klasteryzacji oraz wizualizacji t-SNE pokazują, że różne modele osadzania zdań (Bert i TF-IDF) generują różne reprezentacje przestrzeni. TF-IDF jest bardziej czuły na częstość występowania słów, natomiast Bert efektywniej modeluje podobieństwa semantyczne, co jest szczególnie widoczne w wynikach klasteryzacji. Na szczególną uwagę zasługuje reprezentacja klastrów dla modelu Bert przy użyciu metody KMeans - zdania występujące w obrębie danych klastrów rzeczywiście dotyczą tych samych tematów.
 
 \end{document}
