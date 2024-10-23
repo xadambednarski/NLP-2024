@@ -78,5 +78,84 @@ Oba modele pokazują różnice w sposobie reprezentacji podobieństw. \textbf{Fa
 
 \section{Text Embeddings}
 
+\section{Osadzenia zdań za pomocą dwóch różnych modeli i wizualizacja t-SNE}
+
+W ramach tej części eksperymentu wygenerowano osadzenia zdań z anotowanego korpusu, wykorzystując dwa różne modele: \textbf{TF-IDF} oraz \textbf{BERT}. Następnie wyniki osadzeń zostały zwizualizowane za pomocą algorytmu \textbf{t-SNE}, który redukuje wymiary danych, ułatwiając analizę i porównanie osadzeń zdań.
+
+\subsection{TF-IDF}
+
+Model \textbf{TF-IDF} (ang. Term Frequency-Inverse Document Frequency) mierzy częstość występowania słowa w danym dokumencie w stosunku do jego częstości w całym korpusie. Jest to popularny model bazujący na statystycznym podejściu, który nadaje większe wagi słowom występującym rzadziej w całym korpusie, co pozwala na lepsze odwzorowanie kluczowych informacji w osadzeniach tekstów.
+
+Wizualizacja uzyskanych osadzeń za pomocą algorytmu t-SNE dla modelu TF-IDF jest przedstawiona na Rysunku \ref{fig:tfidf_tsne}. Kolory punktów odpowiadają różnym kategoriom sentymentu: "Mowa nienawiści" (kolor czerwony) oraz "Neutralny" (kolor niebieski). Każdy punkt na wykresie reprezentuje jedno zdanie z korpusu, a po najechaniu na punkt można odczytać treść zdania. Poza tesśćią można zauważyć 'sentiment' czyli etykietę sentymentu przypisaną do danego zdania.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../../plots/tf-idf-t-sne.png}
+    \caption{Wizualizacja osadzeń zdań za pomocą modelu TF-IDF przy użyciu t-SNE}
+    \label{fig:tfidf_tsne}
+\end{figure}
+
+\subsection{BERT}
+
+Model \textbf{BERT} (ang. Bidirectional Encoder Representations from Transformers) jest jednym z najnowocześniejszych modeli do przetwarzania języka naturalnego, wykorzystującym głębokie sieci neuronowe typu transformer. BERT jest w stanie generować osadzenia zdań z uwzględnieniem kontekstu zarówno przed, jak i po danym słowie, co czyni go bardziej skutecznym w modelowaniu złożonych relacji semantycznych w tekście.
+
+Rysunek \ref{fig:bert_tsne} przedstawia wyniki osadzeń zdań wygenerowanych przy użyciu modelu BERT, zwizualizowane za pomocą t-SNE. Podobnie jak w przypadku TF-IDF, kolory odpowiadają różnym kategoriom sentymentu, a każdy punkt reprezentuje jedno zdanie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../../plots/bert-t-sne.png}
+    \caption{Wizualizacja osadzeń zdań za pomocą modelu BERT przy użyciu t-SNE}
+    \label{fig:bert_tsne}
+\end{figure}
+
+\subsection{Porównanie modeli}
+
+Wyniki wizualizacji t-SNE dla modeli \textbf{TF-IDF} oraz \textbf{BERT} pokazują różne podejścia do modelowania osadzeń zdań. TF-IDF, bazując na częstościach słów, generuje osadzenia w sposób bardziej statystyczny, natomiast BERT, dzięki swoim zaawansowanym mechanizmom modelowania kontekstu, pozwala na lepsze uchwycenie semantycznych relacji między zdaniami. W obu przypadkach obserwujemy, że zdania oznaczone jako "Mowa nienawiści" są grupowane w określonych regionach przestrzeni, co może sugerować charakterystyczne cechy językowe używane w takich wypowiedziach.
+
+\subsection{Klasteryzacja osadzeń anotowanych zdań}
+
+W tej części zadania przeprowadziliśmy klasteryzację osadzeń anotowanych zdań uzyskanych z dwóch różnych modeli: TF-IDF oraz BERT. Do klasteryzacji zastosowano dwa różne algorytmy: \textbf{KMeans} oraz \textbf{HDBSCAN}. Wyniki klasteryzacji zostały przedstawione na wykresach t-SNE, które redukują wymiary wektorów osadzeń, umożliwiając wizualizację wyników w przestrzeni dwuwymiarowej.
+
+\subsubsection{Klasteryzacja za pomocą KMeans}
+
+Na pierwszym wykresie (Rysunek \ref{fig:kmeans_tf-idf}) przedstawiono wyniki klasteryzacji przy użyciu algorytmu KMeans dla osadzeń uzyskanych z modelu TF-IDF. Widać wyraźne grupowanie punktów odpowiadających różnym klastrom.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../../plots/tf-idf-kmeans-sentence.png}
+    \caption{Klasteryzacja TF-IDF z użyciem algorytmu KMeans}
+    \label{fig:kmeans_tf-idf}
+\end{figure}
+
+Podobną analizę przeprowadzono dla modelu BERT (Rysunek \ref{fig:kmeans_bert}), gdzie również widzimy wyraźne grupowanie zdań.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../../plots/bert-kmeans-sentence.png}
+    \caption{Klasteryzacja BERT z użyciem algorytmu KMeans}
+    \label{fig:kmeans_bert}
+\end{figure}
+
+\subsubsection{Klasteryzacja za pomocą HDBSCAN}
+
+Dla porównania zastosowano również algorytm HDBSCAN, który jest nienadzorowanym algorytmem klasteryzacji potrafiącym identyfikować klastery o nieregularnych kształtach. Wyniki klasteryzacji modelu TF-IDF za pomocą HDBSCAN przedstawiono na Rysunku \ref{fig:hdbscan_tf-idf}, a dla BERT na Rysunku \ref{fig:hdbscan_bert}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../../plots/tf-idf-hdbscan-sentence.png}
+    \caption{Klasteryzacja TF-IDF z użyciem algorytmu HDBSCAN}
+    \label{fig:hdbscan_tf-idf}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../../plots/bert-hdbscan-sentence.png}
+    \caption{Klasteryzacja BERT z użyciem algorytmu HDBSCAN}
+    \label{fig:hdbscan_bert}
+\end{figure}
+
+\subsubsection{Dyskusja wyników klasteryzacji}
+
+Analizując wyniki klasteryzacji dla obu algorytmów, możemy zauważyć różnice w rozkładzie punktów na wykresach. KMeans wyraźnie dzieli przestrzeń na równe klastry, podczas gdy HDBSCAN jest bardziej elastyczny i potrafi identyfikować mniej regularne struktury klastrów.
 
 \end{document}
