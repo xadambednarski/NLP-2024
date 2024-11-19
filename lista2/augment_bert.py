@@ -1,5 +1,5 @@
 import torch
-from transformers import BertTokenizer, BertForMaskedLM
+from transformers import AutoTokenizer, BertTokenizer, BertForMaskedLM
 import random
 import numpy as np
 from datasets import load_dataset
@@ -9,8 +9,8 @@ import re
 data_files = {"train": "train.jsonl", "test": "test.jsonl"}
 dataset = load_dataset("./sentences", data_files=data_files)
 
-tokenizer = BertTokenizer.from_pretrained("bert-base-multilingual-cased")
-model = BertForMaskedLM.from_pretrained("bert-base-multilingual-cased")
+tokenizer = AutoTokenizer.from_pretrained("allegro/herbert-base-cased")
+model = BertForMaskedLM.from_pretrained("allegro/herbert-base-cased")
 model.eval()
 
 sentences = dataset["train"]["text"]

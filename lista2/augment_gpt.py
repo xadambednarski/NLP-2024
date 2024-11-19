@@ -59,7 +59,6 @@ for sentence in sentences:
         "reconstructed_sentence": reconstructed_sentence
     })
 
-# Save to a CSV file
 df = pd.DataFrame(predicted_sentences)
 df.to_csv("predicted_sentences_gpt2.csv", index=False)
 
